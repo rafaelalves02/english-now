@@ -13,7 +13,7 @@ namespace EnglishNow.Web.Controllers
             {
                 MensagemErro = exceptionHandlerFeature == null ? "erro inesperado" : exceptionHandlerFeature.Error.Message
             };
-            return View();
+            return View(model);
         }
     }
 }
