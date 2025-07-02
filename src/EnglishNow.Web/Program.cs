@@ -5,12 +5,12 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-app.UseExceptionHandler("/Erro/Index");
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-
+    app.UseExceptionHandler("/Erro/Index");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
