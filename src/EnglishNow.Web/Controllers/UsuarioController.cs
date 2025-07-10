@@ -1,13 +1,21 @@
-﻿using EnglishNow.Web.Models.Usuario;
+﻿using EnglishNow.Services;
+using EnglishNow.Web.Models.Usuario;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using System.Runtime.CompilerServices;
 using System.Security.Claims;
 
 namespace EnglishNow.Web.Controllers
 {
     public class UsuarioController : Controller
     {
+        private readonly IUsuarioService _usuarioService;
+        public UsuarioController(IUsuarioService usuarioService)
+        {
+            _usuarioService = usuarioService;
+        }
+
         [Route("login")]
         public IActionResult Login()
         {
@@ -24,9 +32,17 @@ namespace EnglishNow.Web.Controllers
                 return View(model);
             }
 
+            var result = _usuarioService.ValidarLogin(model.Usuario!, model.Senha!);
+
+            if (!result.Sucesso)
+            {
+                ModelState.AddModelError(string.Empty!, result.MensagemErro!);
+                return View(model);
+            }
+
             var claims = new List<Claim>
             {
-                new (ClaimTypes.NameIdentifier, model.Usuario)
+                new (ClaimTypes.NameIdentifier, model.Usuario!)
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
