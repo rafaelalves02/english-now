@@ -42,5 +42,13 @@ namespace EnglishNow.Web.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
+        public IActionResult Logout()
+        {
+            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            return RedirectToAction("Login", "Usuario");
+        }
+
     }
 }
