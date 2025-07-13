@@ -16,11 +16,13 @@ builder.Services
         options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
     });
 
+builder.Configuration.AddEnvironmentVariables();
+
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
-var connectionString = string.Empty;
+var connectionString = builder.Configuration.GetConnectionString("EnglishNowConnectionString");
 
-builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>(c => new UsuarioRepository(connectionString);
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>(c => new UsuarioRepository(connectionString!));
 
 var app = builder.Build();
 

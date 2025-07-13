@@ -49,7 +49,7 @@ namespace EnglishNow.Services
 
             if (usuario.Senha != senha)
             {
-                result.MensagemErro = "";
+                result.MensagemErro = "senha incorreta!";
                 return result;
             }
 
