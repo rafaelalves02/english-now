@@ -2,6 +2,7 @@
 using EnglishNow.Services.Models.Professor;
 using EnglishNow.Repositories.Entities;
 using EnglishNow.Services.Enums;
+using EnglishNow.Services.Mappings;
 
 namespace EnglishNow.Services
 {
@@ -35,25 +36,17 @@ namespace EnglishNow.Services
             }
 
             //inserir usuario
-            var usuariId = _usuarioRepository.Inserir(new Usuario
-            {
-                Login = request.Login,
-                Senha = request.Senha,
-                PapelId = (int)Papel.Professor
-            });
+            var usuarioId = _usuarioRepository.Inserir(request.MapToUsuario());
+            
 
-            if (!usuariId.HasValue)
+            if (!usuarioId.HasValue)
             {
                 result.MensagemErro = "erro ao inserir o usario";
             }
 
             //inserir o professor
-            _professorRepository.Inserir(new Professor
-            {
-                Nome = request.Nome,
-                Email = request.Email,
-                UsuarioId = usuariId!.Value
-            });
+            _professorRepository.Inserir(request.MapToProfessor(usuarioId!.Value));
+           
 
             result.Sucesso = true;
 

@@ -1,5 +1,6 @@
 ﻿using EnglishNow.Services;
 using EnglishNow.Services.Models.Professor;
+using EnglishNow.Web.Mappings;
 using EnglishNow.Web.Models.Professor;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -34,13 +35,8 @@ namespace EnglishNow.Web.Controllers
 
             //cria o professor
 
-            var result = _professorService.Criar(new CriarProfessorRequest
-            {
-                Login = model.Login!,
-                Senha = model.Senha!,
-                Nome = model.Nome!,
-                Email = model.Email!
-            });
+            var result = _professorService.Criar(model.MapToCriarProfessorRequest());
+            
 
             if (!result.Sucesso)
             {
