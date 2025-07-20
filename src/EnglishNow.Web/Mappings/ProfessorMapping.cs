@@ -17,5 +17,18 @@ namespace EnglishNow.Web.Mappings
 
             return request;
         }
+
+        public static ListarViewModel MapToListarViewModel(this ProfessorResult model)
+        {
+            var ViewModel = new ListarViewModel
+            {
+                Id = model.Id,
+                Nome = model.Nome,
+                Email = model.Email,
+                Login = model.Login!
+            };
+
+            return ViewModel;
+        }
     }
 }
