@@ -35,5 +35,17 @@ namespace EnglishNow.Services.Mappings
 
             return result;
         }
+
+        public static Professor MapToProfessor(this EditarProfessorRequest request)
+        {
+            var professor = new Professor
+            {
+                Id = request.Id,
+                Nome = request.Nome,
+                Email = request.Nome
+            };
+
+            return professor;
+        }
     }
 }
