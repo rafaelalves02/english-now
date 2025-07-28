@@ -68,7 +68,7 @@ namespace EnglishNow.Services
 
             var usuarioExistente = _usuarioRepository.ObterPorLogin(request.Login);
 
-            if (usuarioExistente != null && usuarioExistente.Id != request.Id)
+            if (usuarioExistente != null && usuarioExistente.Id != request.UsuarioId)
             {
                 result.MensagemErro = "Já existe um usuário com esse login";
 
@@ -92,7 +92,7 @@ namespace EnglishNow.Services
 
             if (affectedRows == 0)
             {
-                result.MensagemErro = "Não foi possível atualizar o usuaario";
+                result.MensagemErro = "Não foi possível atualizar o usuario";
 
                 return result;
             }

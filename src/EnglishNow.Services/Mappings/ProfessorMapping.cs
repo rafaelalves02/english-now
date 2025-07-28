@@ -27,6 +27,7 @@ namespace EnglishNow.Services.Mappings
             var result = new ProfessorResult
             {
                 Id = professor.Id,
+                UsuarioId = professor.UsuarioId,
                 Nome = professor.Nome,
                 Email = professor.Email,
                 Login = professor.Usuario?.Login,
@@ -42,7 +43,7 @@ namespace EnglishNow.Services.Mappings
             {
                 Id = request.Id,
                 Nome = request.Nome,
-                Email = request.Nome
+                Email = request.Email
             };
 
             return professor;

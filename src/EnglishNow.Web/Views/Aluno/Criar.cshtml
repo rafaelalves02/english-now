@@ -1,24 +1,19 @@
-﻿@model EnglishNow.Web.Models.Professor.EditarViewModel
+﻿@model EnglishNow.Web.Models.Aluno.CriarViewModel
 
 @{
-    ViewData["Title1"] = "Editar professor";
+    ViewData["Title1"] = "Novo Aluno";
 }
 
-<h1>Editar Professor</h1>
+<h1>Novo Aluno</h1>
 
-<form class="row g-3 needs-validation" asp-controller="Professor" asp-action="Editar" novalidate>
-
-    <input type="hidden" asp-for="Id"/>
-
-    <input type="hidden" asp-for="UsuarioId"/>
-
+<form class="row g-3 needs-validation" asp-controller="Aluno" asp-action="Criar" novalidate>
     <div class="col-md-6">
         <label for="inputLogin" class="form-label">Login</label>
         <input type="text" class="form-control" id="inputLogin" asp-for="Login" required>
     </div>
     <div class="col-md-6">
         <label for="inputSenha" class="form-label">Senha</label>
-        <input type="text" class="form-control" id="inputSenha" asp-for="Senha" required>
+        <input type="password" class="form-control" id="inputSenha" asp-for="Senha" required>
     </div>
     <div class="col-12">
         <label for="inputNome" class="form-label">Nome</label>
@@ -30,7 +25,7 @@
     </div>
     <div class="col-12">
         <button type="submit" class="btn btn-primary">Salvar</button>
-        <button type="submit" class="btn btn-danger mx-2" formaction="@Url.Action("Excluir", "Professor", new { id = Model.Id })">Excluir</button>
+        <a class="btn btn-danger" href="@Url.Action("Cancelar", "Aluno")">Cancelar</a>
     </div>
 
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
@@ -42,10 +37,8 @@
          (() => {
           'use strict'
 
-          // Fetch all the forms we want to apply custom Bootstrap validation styles to
           const forms = document.querySelectorAll('.needs-validation')
 
-          // Loop over them and prevent submission
           Array.from(forms).forEach(form => {
             form.addEventListener('submit', event => {
               if (!form.checkValidity()) {

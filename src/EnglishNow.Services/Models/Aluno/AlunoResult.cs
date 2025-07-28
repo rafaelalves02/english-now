@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EnglishNow.Services.Models.Professor
+namespace EnglishNow.Services.Models.Aluno
 {
-    public class EditarProfessorRequest
+    public class AlunoResult
     {
         public int Id { get; set; }
 
@@ -16,8 +16,8 @@ namespace EnglishNow.Services.Models.Professor
 
         public required string Email { get; set; }
 
-        public required string Login { get; set; }
+        public string? Login { get; set; }
 
-        public required string Senha { get; set; }
+        public string? Senha { get; set; }
     }
 }

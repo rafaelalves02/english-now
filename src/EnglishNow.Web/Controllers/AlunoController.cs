@@ -1,21 +1,20 @@
 ﻿using EnglishNow.Services;
-using EnglishNow.Services.Models.Professor;
 using EnglishNow.Web.Mappings;
-using EnglishNow.Web.Models.Professor;
+using EnglishNow.Web.Models.Aluno;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EnglishNow.Web.Controllers
 {
-    [Route("professor")]
+    [Route("aluno")]
     [Authorize]
-
-    public class ProfessorController : Controller
+    public class AlunoController : Controller
     {
-        private readonly IProfessorService _professorService;
-        public ProfessorController(IProfessorService professorService)
+        private readonly IAlunoService _alunoService;
+
+        public AlunoController(IAlunoService alunoService)
         {
-            _professorService = professorService;
+            _alunoService = alunoService;
         }
 
         [Route("criar")]
@@ -24,8 +23,8 @@ namespace EnglishNow.Web.Controllers
             return View();
         }
 
-        [HttpPost]
         [Route("criar")]
+        [HttpPost]
         public IActionResult Criar(CriarViewModel model)
         {
             if (!ModelState.IsValid)
@@ -33,10 +32,7 @@ namespace EnglishNow.Web.Controllers
                 return View(model);
             }
 
-            //cria o professor
-
-            var result = _professorService.Criar(model.MapToCriarProfessorRequest());
-            
+            var result = _alunoService.Criar(model.MapToCriarAlunoRequest());
 
             if (!result.Sucesso)
             {
@@ -46,14 +42,15 @@ namespace EnglishNow.Web.Controllers
             }
 
             return RedirectToAction("Listar");
+
         }
 
         [Route("listar")]
         public IActionResult Listar()
         {
-            var professores = _professorService.Listar();
+            var alunos = _alunoService.Listar();
 
-            var result = professores.Select(c => c.MapToListarViewModel()).ToList();
+            var result = alunos.Select(c => c.MapToListarViewModel()).ToList();
 
             return View(result);
         }
@@ -61,9 +58,9 @@ namespace EnglishNow.Web.Controllers
         [Route("editar/{id}")]
         public IActionResult Editar(int id)
         {
-            var professor = _professorService.ObterPorId(id);
+            var aluno = _alunoService.ObterPorId(id);
 
-            var model = professor?.MapToEditarViewModel();    
+            var model = aluno?.MapToEditarViewModel();
 
             return View(model);
         }
@@ -77,9 +74,9 @@ namespace EnglishNow.Web.Controllers
                 return View(model);
             }
 
-            var request = model.MapToEditarProfessorRequest();
+            var request = model.MapToEditarAlunoRequest();
 
-            var result = _professorService.Editar(request);
+            var result = _alunoService.Editar(request);
 
             if (!result.Sucesso)
             {
@@ -89,14 +86,13 @@ namespace EnglishNow.Web.Controllers
             }
 
             return RedirectToAction("Listar");
-
         }
 
         [Route("excluir/{id}")]
         [HttpPost]
         public IActionResult Excluir(EditarViewModel model)
         {
-            var result = _professorService.Excluir(model.Id);
+            var result = _alunoService.Excluir(model.Id);
 
             if (!result.Sucesso)
             {

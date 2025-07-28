@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EnglishNow.Services.Models.Professor
+namespace EnglishNow.Services.Models.Aluno
 {
-    public class EditarProfessorRequest
+    public class EditarAlunoRequest
     {
         public int Id { get; set; }
 

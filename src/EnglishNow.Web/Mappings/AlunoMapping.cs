@@ -1,13 +1,13 @@
-﻿using EnglishNow.Services.Models.Professor;
-using EnglishNow.Web.Models.Professor;
+﻿using EnglishNow.Services.Models.Aluno;
+using EnglishNow.Web.Models.Aluno;
 
 namespace EnglishNow.Web.Mappings
 {
-    public static class ProfessorMapping
+    public static class AlunoMapping
     {
-        public static CriarProfessorRequest MapToCriarProfessorRequest(this CriarViewModel model)
+        public static CriarAlunoRequest MapToCriarAlunoRequest(this CriarViewModel model)
         {
-            var request = new CriarProfessorRequest
+            var request = new CriarAlunoRequest
             {
                 Login = model.Login!,
                 Senha = model.Senha!,
@@ -18,9 +18,9 @@ namespace EnglishNow.Web.Mappings
             return request;
         }
 
-        public static ListarViewModel MapToListarViewModel(this ProfessorResult model)
+        public static ListarViewModel MapToListarViewModel(this AlunoResult model)
         {
-            var ViewModel = new ListarViewModel
+            var viewModel = new ListarViewModel
             {
                 Id = model.Id,
                 Nome = model.Nome,
@@ -28,12 +28,12 @@ namespace EnglishNow.Web.Mappings
                 Login = model.Login!
             };
 
-            return ViewModel;
+            return viewModel;
         }
 
-        public static EditarViewModel MapToEditarViewModel(this ProfessorResult model)
+        public static EditarViewModel MapToEditarViewModel(this AlunoResult model)
         {
-            var ViewModel = new EditarViewModel
+            var viewModel = new EditarViewModel
             {
                 Id = model.Id,
                 UsuarioId = model.UsuarioId,
@@ -43,12 +43,12 @@ namespace EnglishNow.Web.Mappings
                 Senha = model.Senha
             };
 
-            return ViewModel;
+            return viewModel;
         }
 
-        public static EditarProfessorRequest MapToEditarProfessorRequest(this EditarViewModel model)
+        public static EditarAlunoRequest MapToEditarAlunoRequest(this EditarViewModel model)
         {
-            var request = new EditarProfessorRequest
+            var request = new EditarAlunoRequest
             {
                 Id = model.Id,
                 UsuarioId = model.UsuarioId,

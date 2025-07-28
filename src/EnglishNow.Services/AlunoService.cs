@@ -1,0 +1,158 @@
+﻿using EnglishNow.Repositories;
+using EnglishNow.Services.Mappings;
+using EnglishNow.Services.Models.Aluno;
+
+namespace EnglishNow.Services
+{
+    public interface IAlunoService
+    {
+        CriarAlunoResult Criar(CriarAlunoRequest request);
+
+        EditarAlunoResult Editar(EditarAlunoRequest request);
+
+        ExcluirAlunoResult Excluir(int id);
+
+        IList<AlunoResult> Listar();
+
+        AlunoResult? ObterPorId(int id);
+    }
+
+    public class AlunoService : IAlunoService
+    {
+        private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IAlunoRepository _alunoRepository;
+        public AlunoService(IUsuarioRepository usuarioRepository, IAlunoRepository alunoRepository)
+        {
+            _usuarioRepository = usuarioRepository;
+            _alunoRepository = alunoRepository;
+        }
+
+        public CriarAlunoResult Criar(CriarAlunoRequest request)
+        {
+            var result = new CriarAlunoResult();
+
+            var usuarioExistente = _usuarioRepository.ObterPorLogin(request.Login);
+
+            if (usuarioExistente != null)
+            {
+                result.MensagemErro = "Usuario já existente";
+
+                return result;
+            }
+
+            var usuarioId = _usuarioRepository.Inserir(request.MapToUsuario());
+
+            if (!usuarioId.HasValue)
+            {
+                result.MensagemErro = "Erro ao inserir usuário";
+
+                return result;
+            }
+
+            _alunoRepository.Inserir(request.MapToAluno(usuarioId.Value));
+
+            result.Sucesso = true;
+
+            return result;
+        }
+
+        public EditarAlunoResult Editar(EditarAlunoRequest request)
+        {
+            var result = new EditarAlunoResult();
+
+            var usuarioExistente = _usuarioRepository.ObterPorLogin(request.Login);
+
+            if (usuarioExistente != null && usuarioExistente.Id != request.UsuarioId)
+            {
+                result.MensagemErro = "Já existe um usuário com esse login";
+
+                return result;
+            }
+
+            var aluno = request.MapToAluno();
+
+            var affectedRows = _alunoRepository.Atualizar(aluno);
+
+            if (affectedRows == 0)
+            {
+                result.MensagemErro = "Não foi possível atualizar o aluno";
+
+                return result;
+            }
+
+            var usuario = request.MapToUsuario();
+
+            affectedRows = _usuarioRepository.Atualizar(usuario);
+
+            if (affectedRows == 0)
+            {
+                result.MensagemErro = "Não foi possível atualizar o usuário";
+
+                return result;
+            }
+
+            result.Sucesso = true;
+
+            return result;
+        }
+
+        public ExcluirAlunoResult Excluir(int id)
+        {
+            var result = new ExcluirAlunoResult();
+
+            var aluno = _alunoRepository.ObterPorId(id);
+
+            if (aluno == null)
+            {
+                result.MensagemErro = "Não foi possível encontrar o aluno";
+
+                return result;
+            }
+
+            var affectedRows = _alunoRepository.Apagar(id);
+
+            if (affectedRows == 0)
+            {
+                result.MensagemErro = "Não foi possível apagar o aluno";
+
+                return result;
+            }
+
+            affectedRows = _usuarioRepository.Apagar(aluno.UsuarioId);
+
+            if (affectedRows == 0)
+            {
+                result.MensagemErro = "Não foi possível apagar o usuario";
+
+                return result;
+            }
+
+            result.Sucesso = true;
+
+            return result;
+        }
+
+        public IList<AlunoResult> Listar()
+        {
+            var professores = _alunoRepository.Listar();
+
+            var result = professores.Select(c => c.MapToAlunoResult()).ToList();
+
+            return result;
+        }
+
+        public AlunoResult? ObterPorId(int id)
+        {
+            var aluno = _alunoRepository.ObterPorId(id);
+
+            if (aluno == null)
+            {
+                return null;
+            }
+
+            var result = aluno.MapToAlunoResult();
+
+            return result;
+        }
+    }
+}
