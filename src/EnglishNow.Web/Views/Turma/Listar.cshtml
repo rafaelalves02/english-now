@@ -1,6 +1,8 @@
-﻿@model IList<EnglishNow.Web.Models.Turma.ListarViewModel>;
+﻿@using EnglishNow.Web.Models.Menu
+@model IList<EnglishNow.Web.Models.Turma.ListarViewModel>;
 @{
-    ViewData["Title"] = "Listar Turmas";
+    ViewData["Title"] = "Listar Turmas - ";
+    ViewData["Menu"] = Menu.Turma;
 }
 
 <h1>Lista de Turmas</h1>
