@@ -14,6 +14,8 @@ namespace EnglishNow.Services
 
         IList<AlunoResult> Listar();
 
+        IList<AlunoResult> ListarPorTurma(int turmaId);
+
         AlunoResult? ObterPorId(int id);
     }
 
@@ -135,6 +137,15 @@ namespace EnglishNow.Services
         public IList<AlunoResult> Listar()
         {
             var professores = _alunoRepository.Listar();
+
+            var result = professores.Select(c => c.MapToAlunoResult()).ToList();
+
+            return result;
+        }
+
+        public IList<AlunoResult> ListarPorTurma(int turmaId)
+        {
+            var professores = _alunoRepository.ListarPorTurma(turmaId);
 
             var result = professores.Select(c => c.MapToAlunoResult()).ToList();
 
