@@ -116,9 +116,9 @@ namespace EnglishNow.Web.Controllers
 
         }
 
-        [Route("associarAlunos")]
+        [Route("associarAluno")]
         [HttpPost]
-        public IActionResult AssociarAlunos(int turmaId)
+        public IActionResult AssociarAluno(int turmaId)
         {
             foreach (var formItem in Request.Form)
             {
@@ -129,6 +129,15 @@ namespace EnglishNow.Web.Controllers
                     _turmaService.AssociarAlunoTurma(alunoId, turmaId);
                 }
             }
+
+            return RedirectToAction("Editar", "Turma", new { id = turmaId });
+        }
+
+        [Route("desassociarAluno")]
+        [HttpPost]
+        public IActionResult DesasssociarAluno(int alunoId, int turmaId)
+        {
+            _turmaService.DesassociarAlunoTurma(alunoId, turmaId);
 
             return RedirectToAction("Editar", "Turma", new { id = turmaId });
         }

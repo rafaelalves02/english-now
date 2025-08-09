@@ -18,6 +18,8 @@ namespace EnglishNow.Services
 
         AssociarAlunoTurmaResult AssociarAlunoTurma(int alunoId, int turmaId);
 
+        AssociarAlunoTurmaResult DesassociarAlunoTurma(int alunoId, int turmaId);
+
         ExcluirTurmaResult Excluir(int id);
 
         IList<TurmaResult> Listar();
@@ -85,11 +87,46 @@ namespace EnglishNow.Services
                 TurmaId = turmaId
             };
 
+            var alunoTurma = _alunoTurmaBoletimRepository.ObterPorAlunoTurma(alunoId, turmaId);
+
+            if (alunoTurma != null)
+            {
+                result.MensagemErro = "O aluno Já pertence a esssa turma";
+
+                return result;
+            }
+
             var affectedRows = _alunoTurmaBoletimRepository.Inserir(alunoTurmaBoletim);
 
             if (affectedRows == 0)
             {
                 result.MensagemErro = "Não foi possível associar o aluno à turma";
+                return result;
+            }
+
+            result.Sucesso = true;
+
+            return result;
+        }
+
+        public AssociarAlunoTurmaResult DesassociarAlunoTurma(int alunoId, int turmaId)
+        {
+            var result = new AssociarAlunoTurmaResult();
+
+            var alunoTurma = _alunoTurmaBoletimRepository.ObterPorAlunoTurma(alunoId, turmaId);
+
+            if (alunoTurma == null)
+            {
+                result.MensagemErro = "O aluno não pertence a esssa turma";
+
+                return result;
+            }
+
+            var affectedRows = _alunoTurmaBoletimRepository.Apagar(alunoId, turmaId);
+
+            if (affectedRows == 0)
+            {
+                result.MensagemErro = "Não foi possível desassociar o aluno à turma";
                 return result;
             }
 
