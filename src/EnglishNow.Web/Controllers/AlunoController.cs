@@ -1,4 +1,5 @@
 ﻿using EnglishNow.Services;
+using EnglishNow.Services.Models.Aluno;
 using EnglishNow.Web.Mappings;
 using EnglishNow.Web.Models.Aluno;
 using Microsoft.AspNetCore.Authorization;
@@ -18,6 +19,7 @@ namespace EnglishNow.Web.Controllers
         }
 
         [Route("criar")]
+        [Authorize(Roles = "Administrador")]
         public IActionResult Criar()
         {
             return View();
@@ -25,6 +27,7 @@ namespace EnglishNow.Web.Controllers
 
         [Route("criar")]
         [HttpPost]
+        [Authorize(Roles = "Administrador")]
         public IActionResult Criar(CriarViewModel model)
         {
             if (!ModelState.IsValid)
@@ -48,14 +51,30 @@ namespace EnglishNow.Web.Controllers
         [Route("listar")]
         public IActionResult Listar()
         {
-            var alunos = _alunoService.Listar();
+            IList<AlunoResult>? alunos = null;
 
-            var result = alunos.Select(c => c.MapToListarViewModel()).ToList();
+            if (User.IsInRole("Administrador"))
+            {
+                alunos = _alunoService.Listar();
+            }
+            else if (User.IsInRole("Professor"))
+            {
+                var usuarioId = Convert.ToInt32(User.FindFirst("id")?.Value);
 
-            return View(result);
+                alunos = _alunoService.ListarPorProfessor(usuarioId);
+            }
+
+            var model = new ListarViewModel
+            {
+                Alunos = alunos?.Select(c => c.MapToAlunoViewModel()).ToList(),
+                ExibirBotaoNovoEditar = User.IsInRole("Administrador")
+            };
+
+            return View(model);
         }
 
         [Route("editar/{id}")]
+        [Authorize(Roles = "Administrador")]
         public IActionResult Editar(int id)
         {
             var aluno = _alunoService.ObterPorId(id);
@@ -67,6 +86,7 @@ namespace EnglishNow.Web.Controllers
 
         [Route("editar/{id}")]
         [HttpPost]
+        [Authorize(Roles = "Administrador")]
         public IActionResult Editar(EditarViewModel model)
         {
             if (!ModelState.IsValid)
@@ -90,6 +110,7 @@ namespace EnglishNow.Web.Controllers
 
         [Route("excluir/{id}")]
         [HttpPost]
+        [Authorize( Roles = "Administrador")]
         public IActionResult Excluir(EditarViewModel model)
         {
             var result = _alunoService.Excluir(model.Id);

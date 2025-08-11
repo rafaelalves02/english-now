@@ -2,6 +2,7 @@
 using EnglishNow.Services.Enums;
 using EnglishNow.Services.Models.Aluno;
 using EnglishNow.Services.Models.Professor;
+using EnglishNow.Services.Models.Usuario;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,6 +61,20 @@ namespace EnglishNow.Services.Mappings
             };
 
             return usuario;
+        }
+
+        //login
+
+        public static UsuarioResult MapToUsuarioResult(this Usuario usuario)
+        {
+            var usuarioResult = new UsuarioResult
+            {
+                Login = usuario.Login,
+                Id = usuario.Id,
+                Papel = (Papel)usuario.PapelId
+            };
+
+            return usuarioResult;
         }
     }
 }
