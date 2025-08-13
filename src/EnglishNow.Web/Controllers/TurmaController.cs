@@ -1,4 +1,5 @@
 ﻿using EnglishNow.Services;
+using EnglishNow.Services.Models.Turma;
 using EnglishNow.Web.Mappings;
 using EnglishNow.Web.Models.Turma;
 using Microsoft.AspNetCore.Authorization;
@@ -24,6 +25,7 @@ namespace EnglishNow.Web.Controllers
         }
 
         [Route("criar")]
+        [Authorize(Roles = "Administrador")]
         public IActionResult Criar()
         {
             var model = new CriarViewModel();
@@ -37,6 +39,7 @@ namespace EnglishNow.Web.Controllers
 
         [HttpPost]
         [Route("criar")]
+        [Authorize(Roles = "Administrador")]
         public IActionResult Criar(CriarViewModel model)
         {
             if (!ModelState.IsValid)
@@ -62,9 +65,24 @@ namespace EnglishNow.Web.Controllers
         [Route("listar")]
         public IActionResult Listar()
         {
-            var turmas = _turmaService.Listar();
+            IList<TurmaResult>? turmas = null;
 
-            var result = turmas.Select(c => c.MapToListarViewModel()).ToList();
+            if (User.IsInRole("Administrador"))
+            {
+                turmas = _turmaService.Listar();
+            }
+            else if (User.IsInRole("Professor"))
+            {
+                var usuarioId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+
+                turmas = _turmaService.ListarPorProfessor(usuarioId);
+            }
+
+                var result = new ListarViewModel()
+                {
+                    Turmas = turmas?.Select(c => c.MapToTurmaViewModel()).ToList(),
+                    ExibirBotaoInserir = User.IsInRole("Administrador")
+                };
 
             return View(result);
         }
@@ -89,11 +107,14 @@ namespace EnglishNow.Web.Controllers
 
             model.Professores = ObterListaProfessores();
 
+            model.PodeEditarApagarTurma = User.IsInRole("Administrador");
+
             return View(model);
         }
 
         [Route("editar/{id}")]
         [HttpPost]
+        [Authorize(Roles = "Administrador")]
         public IActionResult Editar(EditarViewModel model)
         {
             if (!ModelState.IsValid)
@@ -118,6 +139,7 @@ namespace EnglishNow.Web.Controllers
 
         [Route("associarAluno")]
         [HttpPost]
+        [Authorize(Roles = "Administrador")]
         public IActionResult AssociarAluno(int turmaId)
         {
             foreach (var formItem in Request.Form)
@@ -135,6 +157,7 @@ namespace EnglishNow.Web.Controllers
 
         [Route("desassociarAluno")]
         [HttpPost]
+        [Authorize(Roles = "Administrador")]
         public IActionResult DesasssociarAluno(int alunoId, int turmaId)
         {
             _turmaService.DesassociarAlunoTurma(alunoId, turmaId);
@@ -144,6 +167,7 @@ namespace EnglishNow.Web.Controllers
 
         [Route("excluir/{id}")]
         [HttpPost]
+        [Authorize(Roles = "Administrador")]
         public IActionResult Excluir(EditarViewModel model)
         {
             var result = _turmaService.Excluir(model.Id);

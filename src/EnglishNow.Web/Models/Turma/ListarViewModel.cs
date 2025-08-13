@@ -2,6 +2,13 @@
 {
     public class ListarViewModel
     {
+        public IList<TurmaViewModel>? Turmas { get; set; }
+
+        public bool ExibirBotaoInserir { get; set; }
+    }
+
+    public class TurmaViewModel
+    {
         public int Id { get; set; }
 
         public required string Professor { get; set; }
@@ -10,6 +17,6 @@
 
         public required string Periodo { get; set; }
 
-        public required string Nivel { get; set; }
+        public required string Nivel { get; set; }  
     }
 }

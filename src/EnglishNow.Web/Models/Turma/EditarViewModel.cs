@@ -30,6 +30,8 @@ namespace EnglishNow.Web.Models.Turma
 
         public IList<AlunoTurmaViewModel>? Alunos { get; set; }
 
+        public bool PodeEditarApagarTurma { get; set; }
+
     }
 
     public class AlunoTurmaViewModel
