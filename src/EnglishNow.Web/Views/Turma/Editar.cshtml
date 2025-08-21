@@ -82,6 +82,8 @@
                                             <button class="btn p-0 link-danger" type="submit">Excluir</button>
                                         </form>
                                     }
+
+                                    <a class="link-underline link-underline-opacity-0" asp-controller="Boletim" asp-action="Editar" asp-route-alunoId="@aluno.Id" asp-route-turmaId="@Model.Id">Boletim</a>
                                 </td>
                             </tr>
                         }
