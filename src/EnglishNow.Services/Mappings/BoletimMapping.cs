@@ -36,5 +36,24 @@ namespace EnglishNow.Services.Mappings
 
             return model;
         }
+
+        public static AlunoTurmaBoletim MapToAlunoTurmaBoletim(this AtualizarBoletimRequest request)
+        {
+            var entity = new AlunoTurmaBoletim
+            {
+                Id = request.BoletimId,
+                NotaBim1Escrita = request.NotaBim1Escrita,
+                NotaBim1Leitura = request.NotaBim1Leitura,
+                NotaBim1Conversacao = request.NotaBim1Conversacao,
+                NotaBim1Final = request.NotaBim1Final,
+                NotaBim2Escrita = request.NotaBim2Escrita,
+                NotaBim2Leitura = request.NotaBim2Leitura,
+                NotaBim2Conversacao = request.NotaBim2Conversacao,
+                NotaBim2Final = request.NotaBim2Final,
+                NotaFinalSemestre = request.NotaFinalSemestre,
+                FaltasSemestre = request.FaltasSemestre
+            };
+            return entity;
+        }
     }
 }

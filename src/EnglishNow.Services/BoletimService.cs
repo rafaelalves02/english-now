@@ -12,6 +12,8 @@ namespace EnglishNow.Services
     public interface IBoletimService
     {
         BoletimResult? ObterBoletimPorAlunoTurma(int alunoId, int turmaId);
+
+        AtualizarBoletimResult Atualizar(AtualizarBoletimRequest atualizarBoletimRequest);
     }
     public class BoletimService : IBoletimService
     {
@@ -19,6 +21,25 @@ namespace EnglishNow.Services
         public BoletimService(IAlunoTurmaBoletimRepository alunoTurmaBoletimRepository)
         {
             _alunoTurmaBoletimRepository = alunoTurmaBoletimRepository;
+        }
+
+        public AtualizarBoletimResult Atualizar(AtualizarBoletimRequest request)
+        {
+            var result = new AtualizarBoletimResult();
+
+            var alunoTurmaBoletim = request.MapToAlunoTurmaBoletim();
+
+            var affectedRows = _alunoTurmaBoletimRepository.Atualizar(alunoTurmaBoletim);
+
+            if (!affectedRows.HasValue || affectedRows == 0)
+            {
+                result.MensagemErro = "Não foi possível atualizar o boletim.";
+                return result;
+            }
+
+            result.Sucesso = true;
+
+            return result;
         }
 
         public BoletimResult? ObterBoletimPorAlunoTurma(int alunoId, int turmaId)

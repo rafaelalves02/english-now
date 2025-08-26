@@ -15,7 +15,7 @@
 <p>Aluno: @Model.NomeAluno</p>
 
 <form class="needs-validation" asp-controller="Boletim" asp-action="Editar" novalidate>
-
+    <input type="hidden" asp-for="BoletimId" />
     <div class="card border my-3">
         <div class="card-header">
             <h4>1° bimestre</h4>
@@ -61,12 +61,12 @@
 
                 <div class="col-sm-12 col-md-3">
                     <label>Conversação (0-10)</label>
-                    <input type="number" id="notaBim2Conversacao" class="form-control calcular2" step="any" placeholder="--" maxlength="3" min="0" max="10" asp-for=NotaBim2Conversacao>
+                    <input type="number" id="notaBim2Conversacao" class="form-control calcular2" step="any" placeholder="--" maxlength="3" min="0" max="10" asp-for="NotaBim2Conversacao">
                 </div>
             </div>
 
             <p class="m-0 pt-3">Nota Final 2° Bimestre: <b id="notaBim2FinalExibicao">@(Model.NotaBim2Final.HasValue? Model.NotaBim2Final: String.Empty)</b></p>
-            <input type="hidden" asp-for="NotaBim2Final" id="notaBim2Final">
+            <input type="hidden" asp-for="NotaBim2Final"  id="notaBim2Final">
         </div>
     </div>
 
@@ -78,7 +78,7 @@
             <div class="row gx-2 gy-3">
                 <div class="col-sm-12 col-md-3 my-3">
                     <label>Faltas</label>
-                    <input type="number" class="form-control" step="any" placeholder="--" maxlength="3" asp-for=FaltasSemestre>
+                    <input type="number" class="form-control" step="any" placeholder="--" maxlength="3" asp-for="FaltasSemestre">
                 </div>
 
                 <p class="m-0">Nota Final: <b id="notaFinalExibicao">@(Model.NotaFinalSemestre.HasValue ? Model.NotaFinalSemestre.Value : string.Empty)</b></p>
@@ -88,6 +88,7 @@
     </div>
 
     <div>
+        
         <button type="submit" class="btn btn-primary">Salvar</button>
     </div>
 </form>
@@ -158,7 +159,7 @@
             notaBim1Final = calcularMediaBimestre(notaBim1Escrita, notaBim1Leitura, notaBim1Conversacao);
 
             elementoNotaBim1FinalExibicao.innerText = notaBim1Final.toLocaleString('pt-BR');
-            elementoNotaBim1Final.value = notaBim1Final;
+            elementoNotaBim1Final.value = notaBim1Final.toLocaleString('pt-BR');
 
             calcularNotaFinal();
         }
@@ -185,7 +186,7 @@
             notaBim2Final = calcularMediaBimestre(notaBim2Escrita, notaBim2Leitura, notaBim2Conversacao);
 
             elementoNotaBim2FinalExibicao.innerText = notaBim2Final.toLocaleString('pt-BR');
-            elementoNotaBim2Final.value = notaBim2Final;
+            elementoNotaBim2Final.value = notaBim2Final.toLocaleString('pt-BR');
 
             calcularNotaFinal();
         }

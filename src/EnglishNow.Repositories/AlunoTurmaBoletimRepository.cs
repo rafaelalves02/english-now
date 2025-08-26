@@ -14,8 +14,9 @@ namespace EnglishNow.Repositories
 
         int? Apagar(int turmaId, int alunoId);
 
-        AlunoTurmaBoletim? ObterPorAlunoTurma(int alunoId, int turmaId);
+        int? Atualizar(AlunoTurmaBoletim alunoTurmaBoletim);                                                    
 
+        AlunoTurmaBoletim? ObterPorAlunoTurma(int alunoId, int turmaId);
     }
 
     public class AlunoTurmaBoletimRepository : BaseRepository, IAlunoTurmaBoletimRepository
@@ -103,6 +104,49 @@ namespace EnglishNow.Repositories
 
         }
 
+        public int? Atualizar(AlunoTurmaBoletim alunoTurmaBoletim)
+        {
+            int? affectedRows = null;
+
+            using (var conn = new MySqlConnection(ConnectionString))
+            {
+                string query = @"UPDATE aluno_turma_boletim
+                                SET
+                                nota_bim1_escrita = @nota_bim1_escrita,
+                                nota_bim1_leitura = @nota_bim1_leitura,
+                                nota_bim1_conversacao = @nota_bim1_conversacao,
+                                nota_bim1_final = @nota_bim1_final,
+                                nota_bim2_leitura =@nota_bim2_leitura,
+                                nota_bim2_escrita = @nota_bim2_escrita,
+                                nota_bim2_conversacao = @nota_bim2_conversacao,
+                                nota_bim2_final = @nota_bim2_final,
+                                nota_final_semestre = @nota_final_semestre,
+                                faltas_semestre = @faltas_semestre
+                                WHERE aluno_turma_boletim_id = @aluno_turma_boletim_id;";
+
+                var cmd = new MySqlCommand(query, conn);
+
+                cmd.Parameters.AddWithValue("@aluno_turma_boletim_id", alunoTurmaBoletim.Id);
+                cmd.Parameters.AddWithValue("@nota_bim1_escrita", alunoTurmaBoletim.NotaBim1Escrita);
+                cmd.Parameters.AddWithValue("@nota_bim1_leitura", alunoTurmaBoletim.NotaBim1Leitura);
+                cmd.Parameters.AddWithValue("@nota_bim1_conversacao", alunoTurmaBoletim.NotaBim1Conversacao);
+                cmd.Parameters.AddWithValue("@nota_bim1_final", alunoTurmaBoletim.NotaBim1Final);
+                cmd.Parameters.AddWithValue("@nota_bim2_leitura", alunoTurmaBoletim.NotaBim2Leitura);
+                cmd.Parameters.AddWithValue("@nota_bim2_escrita", alunoTurmaBoletim.NotaBim2Escrita);
+                cmd.Parameters.AddWithValue("@nota_bim2_conversacao", alunoTurmaBoletim.NotaBim2Conversacao);
+                cmd.Parameters.AddWithValue("@nota_bim2_final", alunoTurmaBoletim.NotaBim2Final);
+                cmd.Parameters.AddWithValue("@nota_final_semestre", alunoTurmaBoletim.NotaFinalSemestre);
+                cmd.Parameters.AddWithValue("@faltas_semestre", alunoTurmaBoletim.FaltasSemestre);
+                
+
+                conn.Open();
+
+                affectedRows = Convert.ToInt32(cmd.ExecuteNonQuery());
+            }
+
+            return affectedRows;
+        }
+
         public AlunoTurmaBoletim? ObterPorAlunoTurma(int alunoId, int turmaId)
         {
             AlunoTurmaBoletim? result = null;
@@ -183,5 +227,7 @@ namespace EnglishNow.Repositories
 
             return result;
         }
+
+        
     }   
 }
