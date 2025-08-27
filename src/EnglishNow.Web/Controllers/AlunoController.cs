@@ -63,6 +63,12 @@ namespace EnglishNow.Web.Controllers
 
                 alunos = _alunoService.ListarPorProfessor(usuarioId);
             }
+            else if (User.IsInRole("Aluno"))
+            {
+                var usuarioId = Convert.ToInt32(User.FindFirst("id")?.Value);
+
+                alunos = _alunoService.ListarPorAluno(usuarioId);
+            }
 
             var model = new ListarViewModel
             {
