@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnglishNow.Services", "Engl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnglishNow.Repositories", "EnglishNow.Repositories\EnglishNow.Repositories.csproj", "{A05095C8-D7CB-4FB9-AB5B-E985284878C2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnglishNow.Tests", "EnglishNow.Tests\EnglishNow.Tests.csproj", "{50507A98-F964-409C-AF7B-59A8C0E420FF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{A05095C8-D7CB-4FB9-AB5B-E985284878C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A05095C8-D7CB-4FB9-AB5B-E985284878C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A05095C8-D7CB-4FB9-AB5B-E985284878C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50507A98-F964-409C-AF7B-59A8C0E420FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50507A98-F964-409C-AF7B-59A8C0E420FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50507A98-F964-409C-AF7B-59A8C0E420FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50507A98-F964-409C-AF7B-59A8C0E420FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
