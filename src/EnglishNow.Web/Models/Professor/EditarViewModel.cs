@@ -20,5 +20,16 @@ namespace EnglishNow.Web.Models.Professor
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
         public string? Email { get; set; }
 
+        public IList<TurmasProfessorViewModel>? TurmasProfessor { get; set; }
+
+    }
+
+    public class TurmasProfessorViewModel
+    {
+        public int Id { get; set; }
+        public string? Nivel { get; set; }
+        public string? Periodo { get; set; }
+        public int Ano { get; set; }
+        public int Semestre { get; set; }
     }
 }

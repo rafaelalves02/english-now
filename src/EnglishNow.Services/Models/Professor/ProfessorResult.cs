@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EnglishNow.Services.Models.Turma;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

@@ -46,6 +46,53 @@
 
 </form>
 
+<div class="card">
+    <div class="card-header">
+        Turmas do Professor
+    </div>
+    <div class="card-body">
+
+        @if (Model.TurmasProfessor == null || Model.TurmasProfessor.Count == 0)
+        {
+            <p class="card-text">Nenhuma turma encontrada</p>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Semestre</th>
+                            <th scope="col">Ano</th>
+                            <th scope="col">Período</th>
+                            <th scope="col">Nível</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var turma in Model.TurmasProfessor)
+                        {
+                            <tr>
+                                <th>@turma.Id</th>
+                                <th>@($"{turma.Semestre}° semestre") </th>
+                                <td>@turma.Ano</td>
+                                <td>@turma.Periodo</td>
+                                <td>@turma.Nivel</td>
+                                <td>
+                                    <a class="link-underline link-underline-opacity-0" asp-controller="Turma" asp-action="Editar" asp-route-id="@turma.Id">Editar</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+
+
 @section Scripts {
     <script>
          (() => {

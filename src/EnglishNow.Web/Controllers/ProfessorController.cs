@@ -66,7 +66,12 @@ namespace EnglishNow.Web.Controllers
         {
             var professor = _professorService.ObterPorId(id);
 
-            var model = professor?.MapToEditarViewModel();    
+            var model = new EditarViewModel();
+
+            model = professor?.MapToEditarViewModel();
+
+            model!.TurmasProfessor = _turmaService.ListarPorProfessorId(id)
+                .Select(t => t.MapToTurmasProfessorViewModel()).ToList();
 
             return View(model);
         }

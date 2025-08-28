@@ -126,7 +126,7 @@ namespace EnglishNow.Services
 
                 return result;
             }
-
+             
             var affectedRows = _professorRepository.Apagar(id);
 
             if (affectedRows == 0)

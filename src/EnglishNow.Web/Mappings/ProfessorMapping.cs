@@ -1,4 +1,5 @@
 ﻿using EnglishNow.Services.Models.Professor;
+using EnglishNow.Services.Models.Turma;
 using EnglishNow.Web.Models.Professor;
 
 namespace EnglishNow.Web.Mappings
@@ -59,6 +60,20 @@ namespace EnglishNow.Web.Mappings
             };
 
             return request;
+        }
+
+        public static TurmasProfessorViewModel MapToTurmasProfessorViewModel(this TurmaResult model)
+        {
+            var ViewModel = new TurmasProfessorViewModel
+            {
+                Id = model.Id,
+                Nivel = model.Nivel,
+                Periodo = model.Periodo,
+                Ano = model.Ano,
+                Semestre = model.Semestre
+            };
+
+            return ViewModel;
         }
     }
 }
