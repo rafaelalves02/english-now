@@ -5,7 +5,7 @@ using EnglishNow.Services.Models.Aluno;
 namespace EnglishNow.Services
 {
     public interface IAlunoService
-    {
+    { 
         CriarAlunoResult Criar(CriarAlunoRequest request);
 
         EditarAlunoResult Editar(EditarAlunoRequest request);
@@ -29,6 +29,7 @@ namespace EnglishNow.Services
     {
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly IAlunoRepository _alunoRepository;
+
         public AlunoService(IUsuarioRepository usuarioRepository, IAlunoRepository alunoRepository)
         {
             _usuarioRepository = usuarioRepository;
@@ -38,6 +39,12 @@ namespace EnglishNow.Services
         public CriarAlunoResult Criar(CriarAlunoRequest request)
         {
             var result = new CriarAlunoResult();
+
+            if (request == null)
+            {
+                result.MensagemErro = "Requisição inválida";
+                return result;
+            }
 
             var usuarioExistente = _usuarioRepository.ObterPorLogin(request.Login);
 
@@ -52,12 +59,19 @@ namespace EnglishNow.Services
 
             if (!usuarioId.HasValue)
             {
-                result.MensagemErro = "Erro ao inserir usuário";
+                result.MensagemErro = "Erro ao inserir o usuário";
 
                 return result;
             }
 
-            _alunoRepository.Inserir(request.MapToAluno(usuarioId.Value));
+            var alunoId = _alunoRepository.Inserir(request.MapToAluno(usuarioId.Value));
+
+            if (!alunoId.HasValue)
+            {
+                result.MensagemErro = "Erro ao inserir o aluno";
+
+                return result;
+            }
 
             result.Sucesso = true;
 
