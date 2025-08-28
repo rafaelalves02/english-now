@@ -18,17 +18,21 @@ namespace EnglishNow.Services
         IList<ProfessorResult> Listar();
 
         ProfessorResult? ObterPorId(int id);
+
+
     }
 
     public class ProfessorService : IProfessorService
     {
         private readonly IProfessorRepository _professorRepository;
         private readonly IUsuarioRepository _usuarioRepository;
+        private readonly ITurmaRepository _turmaRepository;
 
-        public ProfessorService(IProfessorRepository professorRepository, IUsuarioRepository usuarioRepository)
+        public ProfessorService(IProfessorRepository professorRepository, IUsuarioRepository usuarioRepository, ITurmaRepository turmaRepository)
         {
             _professorRepository = professorRepository;
             _usuarioRepository = usuarioRepository;
+            _turmaRepository = turmaRepository;
         }
 
         public CriarProfessorResult Criar(CriarProfessorRequest request)
@@ -105,6 +109,14 @@ namespace EnglishNow.Services
         public ExcluirProfessorResult Excluir(int id)
         {
             var result = new ExcluirProfessorResult();
+
+            var turmas = _turmaRepository.ListarPorProfessorId(id);
+
+            if (turmas.Count > 0)
+            {
+                result.MensagemErro = "Não é possível excluir o professor pois ele está associado a turmas ativas.";
+                return result;
+            }
 
             var professor = _professorRepository.ObterPorId(id);
 

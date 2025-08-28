@@ -74,7 +74,7 @@ namespace EnglishNow.Repositories
                                  professor p INNER JOIN
                                  usuario u ON p.usuario_id = u.usuario_id
                                  ORDER BY
-                                 p.professor_id"; 
+                                 p.professor_id";
 
                 var cmd = new MySqlCommand(query, conn);
 

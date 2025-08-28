@@ -13,9 +13,12 @@ namespace EnglishNow.Web.Controllers
     public class ProfessorController : Controller
     {
         private readonly IProfessorService _professorService;
-        public ProfessorController(IProfessorService professorService)
+        private readonly ITurmaService _turmaService;
+        public ProfessorController(IProfessorService professorService, ITurmaService turmaService)
         {
             _professorService = professorService;
+
+            _turmaService = turmaService;
         }
 
         [Route("criar")]
@@ -100,9 +103,9 @@ namespace EnglishNow.Web.Controllers
 
             if (!result.Sucesso)
             {
-                ModelState.AddModelError(string.Empty, result.MensagemErro!);
+                TempData["Erro"] = result.MensagemErro;
 
-                return View(model);
+                return RedirectToAction("Editar", new { id = model.Id });
             }
 
             return RedirectToAction("Listar");

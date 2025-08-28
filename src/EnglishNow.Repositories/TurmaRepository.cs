@@ -20,6 +20,8 @@ namespace EnglishNow.Repositories
 
         IList<Turma> ListarPorProfessor(int usuarioId);
 
+        IList<Turma> ListarPorProfessorId(int professorId);
+
         IList<Turma> ListarPorAluno(int usuarioId);
 
         Turma? ObterPorId(int id);
@@ -165,10 +167,46 @@ namespace EnglishNow.Repositories
 
                         result.Add(turma);
                     }
-                }
+                } 
             }
 
             return result;
+        }
+
+        public IList<Turma> ListarPorProfessorId(int professorId)
+        {
+            using (var conn = new MySqlConnection(ConnectionString))
+            {
+                var result = new List<Turma>();
+
+                var query = @"SELECT turma_id, semestre, ano, periodo, nivel, professor_id
+                              FROM turma
+                              WHERE professor_id = @professor_id";
+
+                var cmd = new MySqlCommand(query, conn);
+
+                cmd.Parameters.AddWithValue("@professor_id", professorId);
+
+                conn.Open();
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var turma = new Turma
+                        {
+                            Id = reader.GetInt32("turma_id"),
+                            Semestre = reader.GetInt32("semestre"),
+                            Ano = reader.GetInt32("ano"),
+                            Periodo = reader.GetString("periodo"),
+                            Nivel = reader.GetString("nivel"),
+                            ProfessorId = reader.GetInt32("professor_id")
+                        };
+                        result.Add(turma);
+                    }
+                }
+                return result;
+            }
         }
 
         public IList<Turma> ListarPorAluno(int usuarioId)

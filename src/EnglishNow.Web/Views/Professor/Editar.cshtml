@@ -37,6 +37,13 @@
 
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
+    @if (TempData["Erro"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Erro"]
+        </div>
+    }
+
 </form>
 
 @section Scripts {
